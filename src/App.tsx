@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import ReactFlow from 'react-flow-renderer';
 import Attribute from './components/attributes';
@@ -33,7 +33,7 @@ function App() {
 
     const attributeProps = {
         setIsDraggable: setIsDraggable,
-        handleAttWeightingChange: handleAttWeightingChange
+        handleAttWeightingChange: handleAttWeightingChange,
     }
 
     const choiceProps = {
@@ -61,7 +61,7 @@ function App() {
         {
             id: '1',
             type: 'input', // input node
-            data: { label: <Attribute {...attributeProps} /> },
+            data: { label: <Attribute {...attributeProps} attributeTitle="Placeholder Title" id={"1"} /> },
             position: { x: 250, y: 25 },
             style: { "width": "200px" },
         },
@@ -101,7 +101,7 @@ function App() {
         const newElement = {
             id: newId,
             type: 'input',
-            data: { label: <Attribute {...attributeProps} /> },
+            data: { label: <Attribute {...attributeProps} attributeTitle={attributeInput} id={newId} /> },
             position: startPos,
             style: genStyle,
         }
