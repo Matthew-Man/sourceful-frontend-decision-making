@@ -1,3 +1,18 @@
 .App {
     height: 300;
+    display: flex;
+}
+
+.reactflow {
+    height: 600px;
+    width: 80%;
+}
+
+.sidebar {
+    float: right;
+    background-color: #f3f3f3;
+    height: 100%;
+    width: 20%;
+    min-width: 200px;
+    padding: 20px;
 }

@@ -13,7 +13,7 @@ export default function Choice({ setIsDraggable, isDraggable }: IChoice) {
         return (
             <div>
                 <p>Attribute placeholder: {attribute}</p>
-                <div className="slide-container" onMouseEnter={() => setIsDraggable(!isDraggable)} onMouseLeave={() => setIsDraggable(!isDraggable)}>
+                <div className="slide-container" onMouseEnter={() => { setIsDraggable(!isDraggable) }} onMouseLeave={() => { setIsDraggable(!isDraggable) }}>
                     <input type="range" min="0" max="100" step="1" value={attribute} onChange={(e) => setAttribute(e.target.value)} className="slider" />
                 </div>
             </div>
