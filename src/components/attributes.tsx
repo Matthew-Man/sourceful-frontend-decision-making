@@ -7,9 +7,7 @@ interface IAttribute {
 }
 
 export default function Attribute({ setIsDraggable, isDraggable }: IAttribute) {
-    const [weighting, setWeighting] = useState(0.5);
-
-    const divide100 = (value: string): number => parseInt(value) / 100
+    const [weighting, setWeighting] = useState("1");
 
     return (
         <div className="attribute-container">
@@ -18,7 +16,7 @@ export default function Attribute({ setIsDraggable, isDraggable }: IAttribute) {
                 <hr />
                 <p>Weighting: {weighting}</p>
                 <div className="slide-container" onMouseEnter={() => setIsDraggable(!isDraggable)} onMouseLeave={() => setIsDraggable(!isDraggable)}>
-                    <input type="range" min="0" max="100" value={(weighting * 100).toString()} className="slider" onChange={(e) => { setWeighting(divide100(e.target.value)) }} />
+                    <input type="range" min="0" max="1" step="0.01" value={weighting} onChange={(e) => setWeighting(e.target.value)} className="slider" />
                 </div>
             </div>
         </div>
