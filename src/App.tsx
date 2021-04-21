@@ -1,20 +1,22 @@
 import React from 'react';
 import './App.css';
 import ReactFlow from 'react-flow-renderer';
+import Attribute from './components/attributes';
+import Choice from './components/choices';
 
 function App() {
     const elements = [
         {
             id: '1',
             type: 'input', // input node
-            data: { label: 'Input Node' },
+            data: { label: <Attribute /> },
             position: { x: 250, y: 25 },
         },
         // default node
         {
             id: '2',
             // you can also pass a React component as a label
-            data: { label: <div>Default Node</div> },
+            data: { label: <Choice /> },
             position: { x: 100, y: 125 },
         },
         {
@@ -32,7 +34,6 @@ function App() {
         <div className="App">
             <div style={{ height: 700 }}>
                 <ReactFlow elements={elements} />
-                <input />
             </div>
         </div>
     );
