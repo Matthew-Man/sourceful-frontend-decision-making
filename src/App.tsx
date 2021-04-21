@@ -124,7 +124,7 @@ function App() {
 
 
     function handleAddChoice() {
-        const newId = getId()
+        const newId = getId().toString()
         console.log(choiceInput);
 
         const newChoice = {
@@ -138,6 +138,17 @@ function App() {
         setChoiceInput("");
     }
 
+    const forceRefresh = (id: string) =>
+        setElements((arr) => {
+            for (let el of arr) {
+                if (el.id === id) {
+                    console.log(el.data)
+                    el.data = { ...el.data }
+                }
+            }
+            return arr
+        });
+    // Current issue - the choice cards aren't rerendering after adding new attributes althought useEffect on choice.tsx is watching is attributes array
 
     return (
         <div className="App">
@@ -153,6 +164,7 @@ function App() {
                 <p>Add a new choice</p>
                 <input type="text" value={choiceInput} onChange={(e) => setChoiceInput(e.target.value)} placeholder="Choice name..." />
                 <button onClick={() => handleAddChoice()}>Add +</button>
+                <button onClick={() => forceRefresh("1")}>Test</button>
             </div>
         </div>
     );
