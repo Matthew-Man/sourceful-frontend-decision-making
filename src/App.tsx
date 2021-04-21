@@ -19,14 +19,14 @@ function App() {
             data: { label: <Attribute {...props} /> },
             position: { x: 250, y: 25 },
             style: { "width": "200px" },
-
         },
         // default node
         {
             id: '2',
             // you can also pass a React component as a label
-            data: { label: <Choice /> },
+            data: { label: <Choice {...props} /> },
             position: { x: 100, y: 125 },
+            style: { "width": "200px" },
         },
         {
             id: '3',

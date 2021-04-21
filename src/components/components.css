@@ -14,12 +14,6 @@ hr {
     border: 1px solid #c2c2c2;
 }
 
-/* Attributes Styling */
-
-.attribute-container {
-    width: auto;
-}
-
 .content-container {
     display: flex;
     width: 100%;
@@ -27,6 +21,12 @@ hr {
     justify-content: center;
     align-content: flex-start;
     text-align: center;
+}
+
+/* Attributes Styling */
+
+.attribute-container {
+    width: auto;
 }
 
 .slide-container {

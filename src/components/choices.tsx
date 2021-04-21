@@ -1,7 +1,30 @@
+import { useState } from "react";
 import "./components.css";
 
-export default function Choice() {
+interface IChoice {
+    setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>
+    isDraggable: boolean
+}
+
+export default function Choice({ setIsDraggable, isDraggable }: IChoice) {
+    const [attribute, setAttribute] = useState("1")
+
+    function slider() {
+        return (
+            <div>
+                <p>Attribute placeholder: {attribute}</p>
+                <div className="slide-container" onMouseEnter={() => setIsDraggable(!isDraggable)} onMouseLeave={() => setIsDraggable(!isDraggable)}>
+                    <input type="range" min="0" max="100" step="1" value={attribute} onChange={(e) => setAttribute(e.target.value)} className="slider" />
+                </div>
+            </div>
+        )
+    }
+
     return (
-        <div>Hello Choices</div>
+        <div>
+            <p className="title">Choice Placeholder Title</p>
+            <hr />
+            {slider()}
+        </div>
     )
 }
