@@ -11,6 +11,7 @@ function App() {
             type: 'input', // input node
             data: { label: <Attribute /> },
             position: { x: 250, y: 25 },
+            style: { "width": "200px" }
         },
         // default node
         {
