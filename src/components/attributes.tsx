@@ -1,10 +1,15 @@
 import { useState } from "react";
 import "./components.css";
 
-export default function Attribute() {
-    const [weighting, setWeighting] = useState(1);
+interface IAttribute {
+    setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>
+    isDraggable: boolean
+}
 
-    // const calculateSetWeighting = (value: number) => { setWeighting(value / 100) }; //Scale for 0-1
+export default function Attribute({ setIsDraggable, isDraggable }: IAttribute) {
+    const [weighting, setWeighting] = useState(0.5);
+
+    const divide100 = (value: string): number => parseInt(value) / 100
 
     return (
         <div className="attribute-container">
@@ -12,8 +17,8 @@ export default function Attribute() {
                 <p className="title">Attribute Title Placeholder</p>
                 <hr />
                 <p>Weighting: {weighting}</p>
-                <div className="slide-container" onMouseEnter={() => console.log("Mouse has entered")} onMouseLeave={() => console.log("Mouse has left")}>
-                    <input type="range" min="0" max="100" step="1" value={weighting.toString()} className="slider" onChange={(e) => { setWeighting(parseInt(e.target.value)) }} />
+                <div className="slide-container" onMouseEnter={() => setIsDraggable(!isDraggable)} onMouseLeave={() => setIsDraggable(!isDraggable)}>
+                    <input type="range" min="0" max="100" value={(weighting * 100).toString()} className="slider" onChange={(e) => { setWeighting(divide100(e.target.value)) }} />
                 </div>
             </div>
         </div>

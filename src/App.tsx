@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import ReactFlow from 'react-flow-renderer';
 import Attribute from './components/attributes';
 import Choice from './components/choices';
 
 function App() {
+    const [isDraggable, setIsDraggable] = useState(true);
+
+    const props = {
+        setIsDraggable: setIsDraggable,
+        isDraggable: isDraggable
+    }
+
     const elements = [
         {
             id: '1',
             type: 'input', // input node
-            data: { label: <Attribute /> },
+            data: { label: <Attribute {...props} /> },
             position: { x: 250, y: 25 },
-            style: { "width": "200px" }
+            style: { "width": "200px" },
+
         },
         // default node
         {
@@ -34,7 +42,7 @@ function App() {
     return (
         <div className="App">
             <div style={{ height: 700 }}>
-                <ReactFlow elements={elements} />
+                <ReactFlow elements={elements} nodesDraggable={isDraggable} />
             </div>
         </div>
     );
