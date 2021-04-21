@@ -3,10 +3,9 @@ import "./components.css";
 
 interface IAttribute {
     setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>
-    isDraggable: boolean
 }
 
-export default function Attribute({ setIsDraggable, isDraggable }: IAttribute) {
+export default function Attribute({ setIsDraggable }: IAttribute) {
     const [weighting, setWeighting] = useState("1");
 
     return (
@@ -15,7 +14,7 @@ export default function Attribute({ setIsDraggable, isDraggable }: IAttribute) {
                 <p className="title">Attribute Title Placeholder</p>
                 <hr />
                 <p>Weighting: {weighting}</p>
-                <div className="slide-container" onMouseEnter={() => { setIsDraggable((pre) => !pre); console.log("Mouse in") }} onMouseLeave={() => { setIsDraggable((pre) => !pre); console.log("Mouse out") }}>
+                <div className="slide-container" onMouseEnter={() => setIsDraggable((pre) => !pre)} onMouseLeave={() => setIsDraggable((pre) => !pre)}>
                     <input type="range" min="0" max="1" step="0.01" value={weighting} onChange={(e) => setWeighting(e.target.value)} className="slider" />
                 </div>
             </div>

@@ -23,11 +23,10 @@ function App() {
     const [isDraggable, setIsDraggable] = useState(true);
     const [id, setId] = useState(4)
     const [attributeInput, setAttributeInput] = useState("");
+
     const props = {
         setIsDraggable: setIsDraggable,
-        isDraggable: isDraggable
     }
-    console.log(isDraggable)
 
     const getId = () => { setId((num) => num + 1); return id }
 
