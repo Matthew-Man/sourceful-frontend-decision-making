@@ -124,7 +124,17 @@ function App() {
 
 
     function handleAddChoice() {
+        const newId = getId()
         console.log(choiceInput);
+
+        const newChoice = {
+            id: newId,
+            type: 'default',
+            data: { label: <Choice {...choiceProps} /> },
+            position: startPos,
+            style: genStyle
+        }
+        setElements((arr) => arr.concat(newChoice));
         setChoiceInput("");
     }
 
