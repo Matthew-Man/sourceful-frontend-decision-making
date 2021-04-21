@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IAttributeData } from "../App";
 import "./components.css";
 
@@ -7,11 +7,39 @@ interface IChoice {
     allAttributeData: IAttributeData[]
 }
 
+interface IValue {
+    id: string,
+    value: number
+}
+
 export default function Choice({ setIsDraggable, allAttributeData }: IChoice) {
-    const [attribute, setAttribute] = useState("1")
+    const [choiceValues, setChoiceValues] = useState<IValue[]>([]);
+
+    useEffect(() => {
+        const initialAttributeValues = allAttributeData.map((attribute) => ({ id: attribute.id, value: 50 }));
+        setChoiceValues(initialAttributeValues)
+    }, [])
+
+    function handleValueChange(id: string, newValue: number) {
+        console.log("Change value called")
+        setChoiceValues((arr) => {
+            for (let el of arr) {
+                console.log(el)
+                if (el.id === id) {
+                    el.value = newValue
+                }
+            }
+            return arr
+        })
+    }
+
 
     function Slider(props: IAttributeData) {
-        const { attributeName } = props;
+        const { id, attributeName } = props;
+        const [attribute, setAttribute] = useState("50")
+
+        handleValueChange(id, parseFloat(attribute))
+
         return (
             <div>
                 <p>{attributeName}: {attribute}</p>
@@ -22,12 +50,13 @@ export default function Choice({ setIsDraggable, allAttributeData }: IChoice) {
         )
     }
 
+
     return (
         <div>
             <p className="title">Choice Placeholder Title</p>
             <hr />
-            {/* {allAttributeData.map((data) => <Slider {...data} />)} */}
-            <Slider {...allAttributeData[0]} />
+            {allAttributeData.map((data) => <Slider {...data} />)}
+            {/* <Slider {...allAttributeData[0]} /> */}
         </div>
     )
 }
