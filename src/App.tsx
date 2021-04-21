@@ -30,7 +30,6 @@ function App() {
     console.log(isDraggable)
 
     const getId = () => { setId((num) => num + 1); return id }
-    console.log(id)
 
     const initialElements = [
         {
@@ -64,17 +63,12 @@ function App() {
     const [elements, setElements] = useState<any[]>(initialElements)
 
 
-
-    // useEffect(() => {
-    //     setElements(initialElements)
-    // }, [])
-
     function handleAddAttribute() {
         const newElement = {
             id: getId().toString(),
             type: 'input',
             data: { label: <Attribute {...props} /> },
-            position: { x: 100, y: 125 },
+            position: { x: 200, y: 125 },
             style: { "width": "200px" },
         }
         setElements((arr) => arr.concat(newElement));

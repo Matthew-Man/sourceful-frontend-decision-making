@@ -15,7 +15,7 @@ export default function Attribute({ setIsDraggable, isDraggable }: IAttribute) {
                 <p className="title">Attribute Title Placeholder</p>
                 <hr />
                 <p>Weighting: {weighting}</p>
-                <div className="slide-container" onMouseEnter={() => setIsDraggable(!isDraggable)} onMouseLeave={() => setIsDraggable(!isDraggable)}>
+                <div className="slide-container" onMouseEnter={() => { setIsDraggable((pre) => !pre); console.log("Mouse in") }} onMouseLeave={() => { setIsDraggable((pre) => !pre); console.log("Mouse out") }}>
                     <input type="range" min="0" max="1" step="0.01" value={weighting} onChange={(e) => setWeighting(e.target.value)} className="slider" />
                 </div>
             </div>
