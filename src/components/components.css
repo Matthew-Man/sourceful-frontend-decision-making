@@ -1,26 +1,55 @@
 /* Global Component Styling */
 
-h3 {
+.title {
     text-align: left;
     font-size: 12px;
-    color: #444444;
+    color: #5c5c5c;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
 hr {
-    width: 80%;
+    width: 100%;
     border: 1px solid #c2c2c2;
 }
 
 /* Attributes Styling */
 
 .attribute-container {
-    width: 100px;
+    width: auto;
 }
 
-.content-containter {
+.content-container {
     display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
+    align-content: flex-start;
+    text-align: center;
+}
+
+.slide-container {
+    width: 90%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slider {
+    width: 90%;
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+}
+
+.slider:hover {
+    cursor: grab;
 }
 
 /* Choices Styling */

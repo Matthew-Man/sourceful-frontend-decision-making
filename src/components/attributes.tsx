@@ -11,8 +11,8 @@ export default function Attribute() {
             <div className="content-container">
                 <p className="title">Attribute Title Placeholder</p>
                 <hr />
+                <p>Weighting: {weighting}</p>
                 <div className="slide-container" onMouseEnter={() => console.log("Mouse has entered")} onMouseLeave={() => console.log("Mouse has left")}>
-                    <p>Weighting: {weighting}</p>
                     <input type="range" min="0" max="100" step="1" value={weighting.toString()} className="slider" onChange={(e) => { setWeighting(parseInt(e.target.value)) }} />
                 </div>
             </div>
