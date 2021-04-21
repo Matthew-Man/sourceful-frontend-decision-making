@@ -19,17 +19,24 @@ import Choice from './components/choices';
 //     animated?: boolean
 // }
 
-interface IAttributeData {
+export interface IAttributeData {
     id: string,
     attributeName: string,
     weighting: number
 }
 
+// interface IChoice {
+//     id: string,
+//     choiceName: string,
+//     totalScore: number
+// }
+
 function App() {
     const [isDraggable, setIsDraggable] = useState(true);
     const [id, setId] = useState(4);
     const [attributeInput, setAttributeInput] = useState("");
-    const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([{ id: "1", attributeName: "placeholder", weighting: 1 }]);
+    const [choiceInput, setChoiceInput] = useState("");
+    const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([{ id: "1", attributeName: "Placeholder", weighting: 1 }]);
 
     const attributeProps = {
         setIsDraggable: setIsDraggable,
@@ -38,6 +45,7 @@ function App() {
 
     const choiceProps = {
         setIsDraggable: setIsDraggable,
+        allAttributeData: allAttributeData
     }
 
     console.log(allAttributeData)
@@ -52,6 +60,10 @@ function App() {
             return arr
         })
     }
+
+    // function handleAttValueChange(id: string, newValue: number) {
+
+    // }
 
     const getId = () => { setId((num) => num + 1); return id };
     const genStyle = { "width": "200px" };
@@ -111,6 +123,12 @@ function App() {
     }
 
 
+    function handleAddChoice() {
+        console.log(choiceInput);
+        setChoiceInput("");
+    }
+
+
     return (
         <div className="App">
             <div className="reactflow">
@@ -119,7 +137,12 @@ function App() {
             <div className="sidebar">
                 <p>Add a new attribute</p>
                 <input type="text" value={attributeInput} onChange={(e) => setAttributeInput(e.target.value)} placeholder="Attribute name..." />
-                <button onClick={() => { console.log(attributeInput); handleAddAttribute() }}>Add +</button>
+                <button onClick={() => handleAddAttribute()}>Add +</button>
+                <br />
+                <br />
+                <p>Add a new choice</p>
+                <input type="text" value={choiceInput} onChange={(e) => setChoiceInput(e.target.value)} placeholder="Choice name..." />
+                <button onClick={() => handleAddChoice()}>Add +</button>
             </div>
         </div>
     );
