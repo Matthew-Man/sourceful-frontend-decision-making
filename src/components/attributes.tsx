@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./components.css";
 
 interface IAttribute {
-    setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>
+    setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>,
+    handleAttWeightingChange: (id: string, newWeighting: number) => void,
 }
 
-export default function Attribute({ setIsDraggable }: IAttribute) {
+export default function Attribute({ setIsDraggable, handleAttWeightingChange }: IAttribute) {
     const [weighting, setWeighting] = useState("1");
+
+    useEffect(() => {
+        handleAttWeightingChange("1", parseFloat(weighting))
+    }, [weighting])
 
     return (
         <div className="attribute-container">

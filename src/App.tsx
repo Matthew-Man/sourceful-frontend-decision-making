@@ -19,22 +19,49 @@ import Choice from './components/choices';
 //     animated?: boolean
 // }
 
+interface IAttributeData {
+    id: string,
+    attributeName: string,
+    weighting: number
+}
+
 function App() {
     const [isDraggable, setIsDraggable] = useState(true);
-    const [id, setId] = useState(4)
+    const [id, setId] = useState(4);
     const [attributeInput, setAttributeInput] = useState("");
+    const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([{ id: "1", attributeName: "placeholder", weighting: 1 }]);
 
-    const props = {
+    const attributeProps = {
+        setIsDraggable: setIsDraggable,
+        handleAttWeightingChange: handleAttWeightingChange
+    }
+
+    const choiceProps = {
         setIsDraggable: setIsDraggable,
     }
 
-    const getId = () => { setId((num) => num + 1); return id }
+    console.log(allAttributeData)
+
+    function handleAttWeightingChange(id: string, newWeighting: number) {
+        setAllAttributeData((arr) => {
+            for (let el of arr) {
+                if (el.id === id) {
+                    el.weighting = newWeighting
+                }
+            }
+            return arr
+        })
+    }
+
+    const getId = () => { setId((num) => num + 1); return id };
+    const genStyle = { "width": "200px" };
+    const startPos = { x: 250, y: 100 };
 
     const initialElements = [
         {
             id: '1',
             type: 'input', // input node
-            data: { label: <Attribute {...props} /> },
+            data: { label: <Attribute {...attributeProps} /> },
             position: { x: 250, y: 25 },
             style: { "width": "200px" },
         },
@@ -43,7 +70,7 @@ function App() {
             id: '2',
             type: 'default',
             // you can also pass a React component as a label
-            data: { label: <Choice {...props} /> },
+            data: { label: <Choice {...choiceProps} /> },
             position: { x: 100, y: 125 },
             style: { "width": "200px" },
         },
@@ -63,14 +90,24 @@ function App() {
 
 
     function handleAddAttribute() {
+        const newId = getId().toString();
+
+        const newAttributeData = {
+            id: newId,
+            attributeName: attributeInput,
+            weighting: 1
+        }
+
         const newElement = {
-            id: getId().toString(),
+            id: newId,
             type: 'input',
-            data: { label: <Attribute {...props} /> },
-            position: { x: 200, y: 125 },
-            style: { "width": "200px" },
+            data: { label: <Attribute {...attributeProps} /> },
+            position: startPos,
+            style: genStyle,
         }
         setElements((arr) => arr.concat(newElement));
+        setAllAttributeData((arr) => arr.concat(newAttributeData))
+        setAttributeInput("")
     }
 
 
@@ -81,7 +118,7 @@ function App() {
             </div>
             <div className="sidebar">
                 <p>Add a new attribute</p>
-                <input type="text" value={attributeInput} onChange={(e) => setAttributeInput(e.target.value)} />
+                <input type="text" value={attributeInput} onChange={(e) => setAttributeInput(e.target.value)} placeholder="Attribute name..." />
                 <button onClick={() => { console.log(attributeInput); handleAddAttribute() }}>Add +</button>
             </div>
         </div>
