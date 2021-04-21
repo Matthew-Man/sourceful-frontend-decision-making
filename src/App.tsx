@@ -82,7 +82,7 @@ function App() {
             id: '2',
             type: 'default',
             // you can also pass a React component as a label
-            data: { label: <Choice {...choiceProps} /> },
+            data: { label: <Choice {...choiceProps} choiceTitle="Placeholder Title" /> },
             position: { x: 100, y: 125 },
             style: { "width": "200px" },
         },
@@ -130,7 +130,7 @@ function App() {
         const newChoice = {
             id: newId,
             type: 'default',
-            data: { label: <Choice {...choiceProps} /> },
+            data: { label: <Choice {...choiceProps} choiceTitle={choiceInput} /> },
             position: startPos,
             style: genStyle
         }

@@ -4,7 +4,8 @@ import "./components.css";
 
 interface IChoice {
     setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>,
-    allAttributeData: IAttributeData[]
+    allAttributeData: IAttributeData[],
+    choiceTitle: string
 }
 
 interface IValue {
@@ -12,7 +13,7 @@ interface IValue {
     value: number
 }
 
-export default function Choice({ setIsDraggable, allAttributeData }: IChoice) {
+export default function Choice({ setIsDraggable, allAttributeData, choiceTitle }: IChoice) {
     const [choiceValues, setChoiceValues] = useState<IValue[]>([]);
 
     useEffect(() => {
@@ -20,8 +21,18 @@ export default function Choice({ setIsDraggable, allAttributeData }: IChoice) {
         setChoiceValues(initialAttributeValues)
     }, [])
 
+    // useEffect(() => {
+    //     const arrCurrentAttributeId = choiceValues.map(item => item.id);
+    //     for (let item of allAttributeData) {
+    //         if (arrCurrentAttributeId.includes(item.id)) {
+    //             continue;
+    //         } else {
+    //             setChoiceValues(arr => arr.concat({ id: item.id, value: 50 }))
+    //         }
+    //     }
+    // }, [allAttributeData])
+
     function handleValueChange(id: string, newValue: number) {
-        console.log("Change value called")
         setChoiceValues((arr) => {
             for (let el of arr) {
                 console.log(el)
@@ -53,10 +64,13 @@ export default function Choice({ setIsDraggable, allAttributeData }: IChoice) {
 
     return (
         <div>
-            <p className="title">Choice Placeholder Title</p>
+            <p className="title">{choiceTitle}</p>
             <hr />
-            {allAttributeData.map((data) => <Slider {...data} />)}
+            {allAttributeData.map((data) => <Slider {...data} key={data.id} />)}
             {/* <Slider {...allAttributeData[0]} /> */}
+            <br />
+            <h4>Total Score</h4>
+            <p>Some Value</p>
         </div>
     )
 }
