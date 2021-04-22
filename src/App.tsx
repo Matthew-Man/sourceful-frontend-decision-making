@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import './App.css';
 import ReactFlow from 'react-flow-renderer';
 import Attribute from './components/attributes';
@@ -31,12 +31,15 @@ export interface IAttributeData {
 //     totalScore: number
 // }
 
+export const ContextAttributeData = createContext<IAttributeData[]>([]);
+
 function App() {
     const [isDraggable, setIsDraggable] = useState(true);
     const [id, setId] = useState(4);
     const [attributeInput, setAttributeInput] = useState("");
     const [choiceInput, setChoiceInput] = useState("");
     const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([{ id: "1", attributeName: "Placeholder", weighting: 1 }]);
+
 
     const attributeProps = {
         setIsDraggable: setIsDraggable,
@@ -45,10 +48,10 @@ function App() {
 
     const choiceProps = {
         setIsDraggable: setIsDraggable,
-        allAttributeData: allAttributeData
+        // allAttributeData: allAttributeData
     }
 
-    console.log(allAttributeData)
+    // console.log(allAttributeData)
 
     function handleAttWeightingChange(id: string, newWeighting: number) {
         setAllAttributeData((arr) => {
@@ -61,9 +64,6 @@ function App() {
         })
     }
 
-    // function handleAttValueChange(id: string, newValue: number) {
-
-    // }
 
     const getId = () => { setId((num) => num + 1); return id };
     const genStyle = { "width": "200px" };
@@ -82,7 +82,10 @@ function App() {
             id: '2',
             type: 'default',
             // you can also pass a React component as a label
-            data: { label: <Choice {...choiceProps} choiceTitle="Placeholder Title" /> },
+            data: {
+                label:
+                    <Choice {...choiceProps} choiceTitle="Placeholder Title" />
+            },
             position: { x: 100, y: 125 },
             style: { "width": "200px" },
         },
@@ -99,6 +102,7 @@ function App() {
     ]
 
     const [elements, setElements] = useState<any[]>(initialElements)
+    console.log(elements)
 
 
     function handleAddAttribute() {
@@ -130,30 +134,25 @@ function App() {
         const newChoice = {
             id: newId,
             type: 'default',
-            data: { label: <Choice {...choiceProps} choiceTitle={choiceInput} /> },
+            data: {
+                label:
+                    <Choice {...choiceProps} choiceTitle={choiceInput} />
+            },
             position: startPos,
             style: genStyle
         }
         setElements((arr) => arr.concat(newChoice));
         setChoiceInput("");
+        // React context - create context, provide context and consume context in child - avoids having to use props (useContext hook)
     }
 
-    const forceRefresh = (id: string) =>
-        setElements((arr) => {
-            for (let el of arr) {
-                if (el.id === id) {
-                    console.log(el.data)
-                    el.data = { ...el.data }
-                }
-            }
-            return arr
-        });
-    // Current issue - the choice cards aren't rerendering after adding new attributes althought useEffect on choice.tsx is watching is attributes array
 
     return (
         <div className="App">
             <div className="reactflow">
-                <ReactFlow elements={elements} nodesDraggable={isDraggable} />
+                <ContextAttributeData.Provider value={allAttributeData}>
+                    <ReactFlow elements={elements} nodesDraggable={isDraggable} />
+                </ContextAttributeData.Provider>
             </div>
             <div className="sidebar">
                 <p>Add a new attribute</p>
@@ -164,7 +163,6 @@ function App() {
                 <p>Add a new choice</p>
                 <input type="text" value={choiceInput} onChange={(e) => setChoiceInput(e.target.value)} placeholder="Choice name..." />
                 <button onClick={() => handleAddChoice()}>Add +</button>
-                <button onClick={() => forceRefresh("1")}>Test</button>
             </div>
         </div>
     );
