@@ -51,16 +51,24 @@ function App() {
         // allAttributeData: allAttributeData
     }
 
-    // console.log(allAttributeData)
+    console.log(allAttributeData)
 
     function handleAttWeightingChange(id: string, newWeighting: number) {
         setAllAttributeData((arr) => {
-            for (let el of arr) {
+            //Extract to helper function
+            const copyArr = [...arr]
+            for (let el of copyArr) {
                 if (el.id === id) {
-                    el.weighting = newWeighting
+                    const updatedAtt = {
+                        ...el,
+                        weighting: newWeighting
+                    }
+                    copyArr[copyArr.indexOf(el)] = updatedAtt
+                    console.log("element updated:", el)
                 }
             }
-            return arr
+            console.log({ copyArr })
+            return copyArr
         })
     }
 
@@ -102,7 +110,7 @@ function App() {
     ]
 
     const [elements, setElements] = useState<any[]>(initialElements)
-    console.log(elements)
+    // console.log(elements)
 
 
     function handleAddAttribute() {
