@@ -30,12 +30,12 @@ export const ContextChoiceValues = createContext<IValue[]>([])
 
 // const initialChoiceValues = [{ choiceId: "2", attributeId: "1", value: 50 }];
 // const initialAttributeData = [{ id: "1", attributeName: "Placeholder", weighting: 1 }];
-const outputNode = {
-    id: '3',
-    type: 'output', // output node
-    data: { label: 'Output Node' },
-    position: { x: 250, y: 250 },
-};
+
+
+export interface IChoiceTotals {
+    id: string,
+    total: number
+}
 
 
 function App() {
@@ -45,7 +45,10 @@ function App() {
     const [choiceInput, setChoiceInput] = useState("");
     const [choiceValues, setChoiceValues] = useState<IValue[]>([])
     const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([]);
+    const [choiceTotals, setChoiceTotals] = useState<IChoiceTotals[]>([])
 
+
+    //Handle static movement after adding a few elements
 
     const attributeProps = {
         setIsDraggable: setIsDraggable,
@@ -54,6 +57,7 @@ function App() {
 
     const choiceProps = {
         setIsDraggable: setIsDraggable,
+        setChoiceTotals: setChoiceTotals
     }
 
 
@@ -68,7 +72,6 @@ function App() {
                         weighting: newWeighting
                     }
                     copyArr[copyArr.indexOf(el)] = updatedAtt
-                    console.log("element updated:", el)
                 }
             }
             return copyArr
@@ -107,13 +110,20 @@ function App() {
     //     // create links based on type => loop through array to create links
     // ]
 
+    const outputNode = {
+        id: '3',
+        type: 'output', // output node
+        data: { label: 'Output Node' },
+        position: { x: 250, y: 250 },
+    };
+
     const getId = () => { setId((num) => num + 1); return id };
     const genStyle = { "width": "200px" };
     const startPos = { x: 250, y: 100 };
 
 
     const [elements, setElements] = useState<any[]>([outputNode])
-    // console.log(elements)
+    // console.log(choiceTotals)
 
 
     function handleAddAttribute() {
@@ -203,9 +213,12 @@ function App() {
             style: genStyle
         }
 
+        const newChoiceTotal = { id: newId, total: 50 }
+
         setElements((arr) => arr.concat(newChoice));
         createNewChoiceValuesAttribute(newId)
         createChoicePaths(newId)
+        setChoiceTotals(arr => arr.concat(newChoiceTotal))
         setChoiceInput("");
     }
 

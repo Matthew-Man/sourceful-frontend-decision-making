@@ -1,16 +1,17 @@
 import { useState, useEffect, useContext } from "react";
-import { IAttributeData, ContextAttributeData, ContextChoiceValues, IValue } from "../App";
+import { IAttributeData, ContextAttributeData, ContextChoiceValues, IValue, IChoiceTotals } from "../App";
 import "./components.css";
 
 interface IChoice {
     setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>,
     setChoiceValue: React.Dispatch<React.SetStateAction<IValue[]>>,
+    setChoiceTotals: React.Dispatch<React.SetStateAction<IChoiceTotals[]>>
     choiceTitle: string,
     choiceId: string
 }
 
 
-export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, choiceId }: IChoice) {
+export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, choiceId, setChoiceTotals }: IChoice) {
     const choiceValues = useContext(ContextChoiceValues)
     const allAttributeData = useContext(ContextAttributeData)
     const [totalChoiceScore, setTotalChoiceScore] = useState(0);
@@ -50,7 +51,21 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
             return sum
         }
 
-        setTotalChoiceScore(calculateTotalScore())
+        const totalScore = calculateTotalScore()
+        setTotalChoiceScore(totalScore)
+        setChoiceTotals(arr => {
+            const copyArr = [...arr]
+            for (let el of copyArr) {
+                if (el.id === choiceId) {
+                    const newTotal = {
+                        ...el,
+                        total: totalScore
+                    }
+                    copyArr[copyArr.indexOf(el)] = newTotal
+                }
+            }
+            return copyArr;
+        })
     }, [choiceValues, allAttributeData, choiceId])
 
 
