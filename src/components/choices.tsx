@@ -82,7 +82,7 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
 
         return (
             <div>
-                <p>{attributeName}: {sliderAttributeValue}</p>
+                <p>{attributeName}: <b>{sliderAttributeValue}</b></p>
                 <div className="slide-container" onMouseEnter={() => { setIsDraggable((pre) => !pre); handleValueChange(id, sliderAttributeValue) }} onMouseLeave={() => { setIsDraggable((pre) => !pre); handleValueChange(id, sliderAttributeValue) }}>
                     <input type="range" min="0" max="100" step="1" value={sliderAttributeValue} onChange={handleOnDrag} className="slider" />
                 </div>

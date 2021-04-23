@@ -18,7 +18,7 @@ export default function Attribute({ setIsDraggable, handleAttWeightingChange, at
             <div className="content-container">
                 <p className="title">{attributeTitle}</p>
                 <hr />
-                <p>Weighting: {weighting}</p>
+                <p>Weighting: <b>{weighting}</b></p>
                 <div className="slide-container" onMouseEnter={() => setIsDraggable((pre) => !pre)} onMouseLeave={() => setIsDraggable((pre) => !pre)}>
                     <input type="range" min="0" max="1" step="0.01" value={weighting} onChange={(e) => setWeighting(e.target.value)} className="slider" />
                 </div>
