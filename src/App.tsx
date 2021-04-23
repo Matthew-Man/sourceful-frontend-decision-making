@@ -4,6 +4,7 @@ import ReactFlow from 'react-flow-renderer';
 import Attribute from './components/attributes';
 import Choice from './components/choices';
 
+//Add test <-
 
 export interface IAttributeData {
     id: string,
@@ -11,7 +12,16 @@ export interface IAttributeData {
     weighting: number
 }
 
+interface IValue {
+    choiceId: string,
+    attributeId: string,
+    value: number
+}
+
 export const ContextAttributeData = createContext<IAttributeData[]>([]);
+export const ContextChoiceValues = createContext<IValue[]>([])
+
+const initialChoiceValues = [{ choiceId: "2", attributeId: "1", value: 50 }]
 
 
 function App() {
@@ -19,6 +29,7 @@ function App() {
     const [id, setId] = useState(4);
     const [attributeInput, setAttributeInput] = useState("");
     const [choiceInput, setChoiceInput] = useState("");
+    const [choiceValues, setChoiceValues] = useState(initialChoiceValues)
     const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([{ id: "1", attributeName: "Placeholder", weighting: 1 }]);
 
 
@@ -29,10 +40,9 @@ function App() {
 
     const choiceProps = {
         setIsDraggable: setIsDraggable,
-        // allAttributeData: allAttributeData
     }
 
-    console.log(allAttributeData)
+    console.log(choiceValues)
 
     function handleAttWeightingChange(id: string, newWeighting: number) {
         setAllAttributeData((arr) => {
@@ -73,7 +83,7 @@ function App() {
             // you can also pass a React component as a label
             data: {
                 label:
-                    <Choice {...choiceProps} choiceTitle="Placeholder Title" />
+                    <Choice {...choiceProps} setChoiceValue={setChoiceValues} choiceTitle="Placeholder Title" choiceId={"2"} />
             },
             position: { x: 100, y: 125 },
             style: { "width": "200px" },
@@ -111,8 +121,18 @@ function App() {
             style: genStyle,
         }
         setElements((arr) => arr.concat(newElement));
+        createNewChoiceValues(newId)
         setAllAttributeData((arr) => arr.concat(newAttributeData))
         setAttributeInput("")
+    }
+
+
+    function createNewChoiceValues(attributeId: string) {
+        const arrOfChoicesId = elements.filter(obj => obj.type === 'default').map(obj => obj.id)
+        console.log(arrOfChoicesId)
+        for (let choiceId of arrOfChoicesId) {
+            setChoiceValues((arr) => arr.concat({ choiceId: choiceId, attributeId: attributeId, value: 50 }))
+        }
     }
 
 
@@ -125,7 +145,7 @@ function App() {
             type: 'default',
             data: {
                 label:
-                    <Choice {...choiceProps} choiceTitle={choiceInput} />
+                    <Choice {...choiceProps} setChoiceValue={setChoiceValues} choiceTitle={choiceInput} choiceId={newId} />
             },
             position: startPos,
             style: genStyle
@@ -139,9 +159,11 @@ function App() {
     return (
         <div className="App">
             <div className="reactflow">
-                <ContextAttributeData.Provider value={allAttributeData}>
-                    <ReactFlow elements={elements} nodesDraggable={isDraggable} />
-                </ContextAttributeData.Provider>
+                <ContextChoiceValues.Provider value={choiceValues}>
+                    <ContextAttributeData.Provider value={allAttributeData}>
+                        <ReactFlow elements={elements} nodesDraggable={isDraggable} />
+                    </ContextAttributeData.Provider>
+                </ContextChoiceValues.Provider>
             </div>
             <div className="sidebar">
                 <p>Add a new attribute</p>
