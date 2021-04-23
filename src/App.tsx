@@ -18,6 +18,13 @@ interface IValue {
     value: number
 }
 
+interface IPath {
+    id: string,
+    source: string,
+    target: string,
+    animated: boolean
+}
+
 export const ContextAttributeData = createContext<IAttributeData[]>([]);
 export const ContextChoiceValues = createContext<IValue[]>([])
 
@@ -101,7 +108,7 @@ function App() {
     ]
 
     const [elements, setElements] = useState<any[]>(initialElements)
-    console.log(elements)
+    // console.log(elements)
 
 
     function handleAddAttribute() {
@@ -123,6 +130,7 @@ function App() {
         setElements((arr) => arr.concat(newElement));
         createNewChoiceValues(newId)
         setAllAttributeData((arr) => arr.concat(newAttributeData))
+        createAttributePaths(newId)
         setAttributeInput("")
     }
 
@@ -140,6 +148,23 @@ function App() {
         for (let attributeId of arrOfAttributeId) {
             setChoiceValues((arr) => arr.concat({ choiceId: choiceId, attributeId: attributeId, value: 50 }))
         }
+    }
+
+
+    function createSinglePath(source: string, target: string, isAnimated: boolean) {
+        const newPath = { id: `e${source}-${target}`, source: source, target: target, animated: isAnimated }
+        return newPath
+    }
+
+
+    function createAttributePaths(currentId: string) {
+        let newPaths: IPath[] = []
+        for (let item of elements) {
+            if (item.type === 'default') {
+                newPaths.push(createSinglePath(currentId, item.id, true))
+            }
+        }
+        setElements(arr => arr.concat(newPaths))
     }
 
 

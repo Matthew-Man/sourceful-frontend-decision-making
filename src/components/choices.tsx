@@ -4,19 +4,11 @@ import "./components.css";
 
 interface IChoice {
     setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>,
-    setChoiceValue: React.Dispatch<React.SetStateAction<{
-        choiceId: string;
-        attributeId: string;
-        value: number;
-    }[]>>,
+    setChoiceValue: React.Dispatch<React.SetStateAction<{ choiceId: string; attributeId: string; value: number; }[]>>,
     choiceTitle: string,
     choiceId: string
 }
 
-interface IValue {
-    id: string,
-    value: number
-}
 
 export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, choiceId }: IChoice) {
     const choiceValues = useContext(ContextChoiceValues)
