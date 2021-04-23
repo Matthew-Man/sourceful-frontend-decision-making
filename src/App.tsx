@@ -1,8 +1,9 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import './App.css';
 import ReactFlow from 'react-flow-renderer';
 import Attribute from './components/attributes';
 import Choice from './components/choices';
+import Output from './components/output';
 
 //Add test <-
 
@@ -26,7 +27,8 @@ interface IPath {
 }
 
 export const ContextAttributeData = createContext<IAttributeData[]>([]);
-export const ContextChoiceValues = createContext<IValue[]>([])
+export const ContextChoiceValues = createContext<IValue[]>([]);
+export const ContextWinner = createContext("");
 
 // const initialChoiceValues = [{ choiceId: "2", attributeId: "1", value: 50 }];
 // const initialAttributeData = [{ id: "1", attributeName: "Placeholder", weighting: 1 }];
@@ -34,6 +36,7 @@ export const ContextChoiceValues = createContext<IValue[]>([])
 
 export interface IChoiceTotals {
     id: string,
+    title: string,
     total: number
 }
 
@@ -43,9 +46,10 @@ function App() {
     const [id, setId] = useState(4);
     const [attributeInput, setAttributeInput] = useState("");
     const [choiceInput, setChoiceInput] = useState("");
-    const [choiceValues, setChoiceValues] = useState<IValue[]>([])
+    const [choiceValues, setChoiceValues] = useState<IValue[]>([]);
     const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([]);
-    const [choiceTotals, setChoiceTotals] = useState<IChoiceTotals[]>([])
+    const [choiceTotals, setChoiceTotals] = useState<IChoiceTotals[]>([]);
+    const [winner, setWinner] = useState("");
 
 
     //Handle static movement after adding a few elements
@@ -110,20 +114,30 @@ function App() {
     //     // create links based on type => loop through array to create links
     // ]
 
-    const outputNode = {
-        id: '3',
-        type: 'output', // output node
-        data: { label: 'Output Node' },
-        position: { x: 250, y: 250 },
-    };
 
     const getId = () => { setId((num) => num + 1); return id };
     const genStyle = { "width": "200px" };
     const startPos = { x: 250, y: 100 };
 
+    useEffect(() => {
+        if (choiceTotals.length > 0) {
+            const winnerObject = choiceTotals.reduce((max, choice) => max.total > choice.total ? max : choice);
+            setWinner(winnerObject.title)
+            // const winnerObject = Math.max.apply(Math, choiceTotals.map(function (o) { return o.total }))
+            // console.log(winnerObject)
+        }
+    }, [choiceTotals])
+
+    const outputNode = {
+        id: '3',
+        type: 'output', // output node
+        data: { label: <Output /> },
+        position: { x: 250, y: 250 },
+    };
 
     const [elements, setElements] = useState<any[]>([outputNode])
     // console.log(choiceTotals)
+
 
 
     function handleAddAttribute() {
@@ -213,7 +227,7 @@ function App() {
             style: genStyle
         }
 
-        const newChoiceTotal = { id: newId, total: 50 }
+        const newChoiceTotal = { id: newId, title: choiceInput, total: 50 }
 
         setElements((arr) => arr.concat(newChoice));
         createNewChoiceValuesAttribute(newId)
@@ -226,11 +240,13 @@ function App() {
     return (
         <div className="App">
             <div className="reactflow">
-                <ContextChoiceValues.Provider value={choiceValues}>
-                    <ContextAttributeData.Provider value={allAttributeData}>
-                        <ReactFlow elements={elements} nodesDraggable={isDraggable} />
-                    </ContextAttributeData.Provider>
-                </ContextChoiceValues.Provider>
+                <ContextWinner.Provider value={winner}>
+                    <ContextChoiceValues.Provider value={choiceValues}>
+                        <ContextAttributeData.Provider value={allAttributeData}>
+                            <ReactFlow elements={elements} nodesDraggable={isDraggable} />
+                        </ContextAttributeData.Provider>
+                    </ContextChoiceValues.Provider>
+                </ContextWinner.Provider>
             </div>
             <div className="sidebar">
                 <p>Add a new attribute</p>
