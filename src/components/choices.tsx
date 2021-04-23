@@ -1,4 +1,3 @@
-import { constants } from "crypto";
 import { useState, useEffect, useContext } from "react";
 import { IAttributeData, ContextAttributeData, ContextChoiceValues } from "../App";
 import "./components.css";
@@ -22,17 +21,13 @@ interface IValue {
 export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, choiceId }: IChoice) {
     const choiceValues = useContext(ContextChoiceValues)
     const allAttributeData = useContext(ContextAttributeData)
-    const initialAttributeValues = [...allAttributeData].map((attribute) => ({ id: attribute.id, value: 50 }));
     const [totalChoiceScore, setTotalChoiceScore] = useState(0);
 
 
     function handleValueChange(id: string, newValue: number) {
-        // console.log("Update value called")
         setChoiceValue((arr) => {
             const copyArr = [...arr]
             for (let el of copyArr) {
-                console.log("Update choice id:", choiceId)
-                console.log("Update attribute id:", id)
                 if (el.attributeId === id && el.choiceId === choiceId) {
                     const newChoice = {
                         ...el,
@@ -41,31 +36,29 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
                     copyArr[copyArr.indexOf(el)] = newChoice
                 }
             }
-            console.log({ copyArr })
             return copyArr
         })
-        // console.log({ choiceValues })
     }
 
 
-    // function calculateWeightedScore(attributeId: string): number {
-    //     const weighting = allAttributeData.find((attribute) => attributeId === attribute.id)!.weighting;
-    //     const value = choiceValues.find((attribute) => attribute.id === attributeId)!.value;
-    //     return weighting * value
-    // }
+    function calculateWeightedScore(attributeId: string): number {
+        const value = choiceValues[choiceValues.findIndex(obj => obj.choiceId === choiceId && obj.attributeId === attributeId)].value
+        const weighting = allAttributeData[allAttributeData.findIndex(obj => obj.id === attributeId)].weighting
+        return value * weighting
+    }
 
-    // function calculateTotalScore() {
-    //     let sum = 0;
-    //     for (let att of allAttributeData) {
-    //         sum += calculateWeightedScore(att.id)
-    //     }
-    //     setTotalChoiceScore(sum)
-    // }
+    function calculateTotalScore() {
+        let sum = 0;
+        for (let att of allAttributeData) {
+            sum += calculateWeightedScore(att.id)
+        }
+        return sum
+    }
 
 
     useEffect(() => {
-        setTotalChoiceScore(choiceValues[choiceValues.findIndex(obj => obj.choiceId === choiceId)].value)
-    }, [choiceValues])
+        setTotalChoiceScore(calculateTotalScore())
+    }, [choiceValues, allAttributeData])
 
 
     function Slider(props: IAttributeData) {
