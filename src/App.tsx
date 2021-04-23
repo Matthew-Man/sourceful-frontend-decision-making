@@ -4,20 +4,6 @@ import ReactFlow from 'react-flow-renderer';
 import Attribute from './components/attributes';
 import Choice from './components/choices';
 
-// interface IElements {
-//     id: string,
-//     type: string,
-//     data: { label: any },
-//     position: { x: number, y: number },
-//     style?: { "width": string }
-// }
-
-// interface IConnections {
-//     id: string,
-//     source: string,
-//     target: string,
-//     animated?: boolean
-// }
 
 export interface IAttributeData {
     id: string,
@@ -25,13 +11,8 @@ export interface IAttributeData {
     weighting: number
 }
 
-// interface IChoice {
-//     id: string,
-//     choiceName: string,
-//     totalScore: number
-// }
-
 export const ContextAttributeData = createContext<IAttributeData[]>([]);
+
 
 function App() {
     const [isDraggable, setIsDraggable] = useState(true);
