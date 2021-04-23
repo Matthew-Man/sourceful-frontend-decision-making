@@ -66,7 +66,7 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
             }
             return copyArr;
         })
-    }, [choiceValues, allAttributeData, choiceId])
+    }, [choiceValues, allAttributeData, choiceId, setChoiceTotals])
 
 
     function Slider(props: IAttributeData) {

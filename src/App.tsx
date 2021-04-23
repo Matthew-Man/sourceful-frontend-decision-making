@@ -209,6 +209,9 @@ function App() {
                 </ContextWinner.Provider>
             </div>
             <div className="sidebar">
+                <h4>Created by Matthew Man for the Sourceful Frontend Task</h4>
+                <p>Access to source code available at the bottom through link to github</p>
+                <hr />
                 <p>Add a new attribute</p>
                 <input type="text" value={attributeInput} onChange={(e) => setAttributeInput(e.target.value)} placeholder="Attribute name..." />
                 <button onClick={() => handleAddAttribute()}>Add +</button>
@@ -217,6 +220,10 @@ function App() {
                 <p>Add a new choice</p>
                 <input type="text" value={choiceInput} onChange={(e) => setChoiceInput(e.target.value)} placeholder="Choice name..." />
                 <button onClick={() => handleAddChoice()}>Add +</button>
+                <br />
+                <br />
+                <hr />
+                <a href="https://github.com/Matthew-Man/sourceful-frontend-decision-making">Go to sourcecode</a>
             </div>
         </div>
     );
