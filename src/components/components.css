@@ -23,6 +23,12 @@ hr {
     text-align: center;
 }
 
+.scoring {
+    font-weight: 700;
+    color: rgb(19, 43, 110);
+    font-size: 16px;
+}
+
 /* Attributes Styling */
 
 .attribute-container {
@@ -51,5 +57,3 @@ hr {
 .slider:hover {
     cursor: grab;
 }
-
-/* Choices Styling */

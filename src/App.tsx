@@ -5,7 +5,6 @@ import Attribute from './components/attributes';
 import Choice from './components/choices';
 import Output from './components/output';
 
-//Add test <-
 
 export interface IAttributeData {
     id: string,
@@ -52,8 +51,6 @@ function App() {
     const [winner, setWinner] = useState("");
 
 
-    //Handle static movement after adding a few elements
-
     const attributeProps = {
         setIsDraggable: setIsDraggable,
         handleAttWeightingChange: handleAttWeightingChange,
@@ -67,7 +64,6 @@ function App() {
 
     function handleAttWeightingChange(id: string, newWeighting: number) {
         setAllAttributeData((arr) => {
-            //Extract to helper function
             const copyArr = [...arr]
             for (let el of copyArr) {
                 if (el.id === id) {
@@ -82,38 +78,6 @@ function App() {
         })
     }
 
-    // const initialElements = [
-    //     {
-    //         id: '1',
-    //         type: 'input', // input node
-    //         data: { label: <Attribute {...attributeProps} attributeTitle="Placeholder Title" id={"1"} /> },
-    //         position: { x: 250, y: 25 },
-    //         style: { "width": "200px" },
-    //     },
-    //     // default node
-    //     {
-    //         id: '2',
-    //         type: 'default',
-    //         // you can also pass a React component as a label
-    //         data: {
-    //             label:
-    //                 <Choice {...choiceProps} setChoiceValue={setChoiceValues} choiceTitle="Placeholder Title" choiceId={"2"} />
-    //         },
-    //         position: { x: 100, y: 125 },
-    //         style: { "width": "200px" },
-    //     },
-    //     {
-    //         id: '3',
-    //         type: 'output', // output node
-    //         data: { label: 'Output Node' },
-    //         position: { x: 250, y: 250 },
-    //     },
-    //     // animated edge
-    //     { id: 'e1-2', source: '1', target: '2', animated: true },
-    //     { id: 'e2-3', source: '2', target: '3' },
-    //     // create links based on type => loop through array to create links
-    // ]
-
 
     const getId = () => { setId((num) => num + 1); return id };
     const genStyle = { "width": "200px" };
@@ -123,8 +87,6 @@ function App() {
         if (choiceTotals.length > 0) {
             const winnerObject = choiceTotals.reduce((max, choice) => max.total > choice.total ? max : choice);
             setWinner(winnerObject.title)
-            // const winnerObject = Math.max.apply(Math, choiceTotals.map(function (o) { return o.total }))
-            // console.log(winnerObject)
         }
     }, [choiceTotals])
 
@@ -136,8 +98,6 @@ function App() {
     };
 
     const [elements, setElements] = useState<any[]>([outputNode])
-    // console.log(choiceTotals)
-
 
 
     function handleAddAttribute() {

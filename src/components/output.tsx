@@ -7,7 +7,7 @@ export default function Output() {
     return (
         <div>
             <h3>Winner</h3>
-            <p className="Winner">{winner}</p>
+            <p className="scoring">{winner}</p>
         </div>
     )
 }

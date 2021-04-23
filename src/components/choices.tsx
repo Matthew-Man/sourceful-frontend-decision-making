@@ -98,7 +98,7 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
             {allAttributeData.map((data) => <Slider {...data} key={data.id} />)}
             <br />
             <h4>Total Score</h4>
-            <p>{totalChoiceScore}</p>
+            <p className="scoring">{totalChoiceScore.toFixed(1)}</p>
         </div>
     )
 }
