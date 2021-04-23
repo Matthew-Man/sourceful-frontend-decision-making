@@ -23,31 +23,8 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
     const choiceValues = useContext(ContextChoiceValues)
     const allAttributeData = useContext(ContextAttributeData)
     const initialAttributeValues = [...allAttributeData].map((attribute) => ({ id: attribute.id, value: 50 }));
-    // const [choiceValues, setChoiceValues] = useState<IValue[]>(initialAttributeValues);
     const [totalChoiceScore, setTotalChoiceScore] = useState(0);
 
-    // console.log("choice is rerendered")
-    // console.log({ allAttributeData })
-    // allAttributeData not updating after change state in parent component - this doesn't log 
-
-    // function checkAndAddChoiceValues() {
-    //     const arrCurrentAttributeId = choiceValues.map(item => item.id);
-    //     for (let item of allAttributeData) {
-    //         if (arrCurrentAttributeId.includes(item.id)) {
-    //             continue;
-    //         } else {
-    //             setChoiceValue(arr => arr.concat({ id: item.id, value: 50 }))
-    //             // return choiceValues.length - 1
-    //         }
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     checkAndAddChoiceValues()
-    //     console.log("useEffect called")
-    //     //calc new score
-    //     // calculateTotalScore()
-    // }, [allAttributeData, choiceValues])
 
     function handleValueChange(id: string, newValue: number) {
         console.log("Update value called")
@@ -84,12 +61,6 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
     // }
 
 
-    // console.log(totalChoiceScore);
-    // useEffect(() => {
-    //     console.log("calculate")
-    //     setTotalChoiceScore(calculateWeightedScore("1"))
-    // }, [allAttributeData])
-
     useEffect(() => {
         setTotalChoiceScore(choiceValues[choiceValues.findIndex(obj => obj.choiceId === choiceId)].value)
     }, [choiceValues])
@@ -97,25 +68,13 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
 
     function Slider(props: IAttributeData) {
         const { id, attributeName } = props;
-        // checkAndAddChoiceValues()
         const indexChoice = choiceValues.findIndex(obj => obj.attributeId === id)
         const initialAttributeValue = choiceValues[indexChoice].value
         const [sliderAttributeValue, setSliderAttributeValue] = useState(initialAttributeValue)
 
-        // useEffect(() => {
-        //     setSliderAttributeValue(choiceValues[indexChoice].value)
-        // }, [choiceValues])
-
-        // useEffect(() => {
-        //     if (sliderAttributeValue !== initialAttributeValue) {
-        //         handleValueChange(id, sliderAttributeValue)
-        //     }
-        // }, [sliderAttributeValue])
-
 
         function handleOnDrag(e: React.ChangeEvent<HTMLInputElement>) {
             setSliderAttributeValue(parseFloat(e.target.value))
-            // handleValueChange(id, parseFloat(e.target.value))
         }
 
         return (
