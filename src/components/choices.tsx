@@ -27,10 +27,12 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
 
 
     function handleValueChange(id: string, newValue: number) {
-        console.log("Update value called")
+        // console.log("Update value called")
         setChoiceValue((arr) => {
             const copyArr = [...arr]
             for (let el of copyArr) {
+                console.log("Update choice id:", choiceId)
+                console.log("Update attribute id:", id)
                 if (el.attributeId === id && el.choiceId === choiceId) {
                     const newChoice = {
                         ...el,
@@ -42,7 +44,7 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
             console.log({ copyArr })
             return copyArr
         })
-        console.log({ choiceValues })
+        // console.log({ choiceValues })
     }
 
 
@@ -68,7 +70,7 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
 
     function Slider(props: IAttributeData) {
         const { id, attributeName } = props;
-        const indexChoice = choiceValues.findIndex(obj => obj.attributeId === id)
+        const indexChoice = choiceValues.findIndex(obj => obj.attributeId === id && obj.choiceId === choiceId)
         const initialAttributeValue = choiceValues[indexChoice].value
         const [sliderAttributeValue, setSliderAttributeValue] = useState(initialAttributeValue)
 

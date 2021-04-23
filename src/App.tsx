@@ -101,7 +101,7 @@ function App() {
     ]
 
     const [elements, setElements] = useState<any[]>(initialElements)
-    // console.log(elements)
+    console.log(elements)
 
 
     function handleAddAttribute() {
@@ -129,8 +129,15 @@ function App() {
 
     function createNewChoiceValues(attributeId: string) {
         const arrOfChoicesId = elements.filter(obj => obj.type === 'default').map(obj => obj.id)
-        console.log(arrOfChoicesId)
         for (let choiceId of arrOfChoicesId) {
+            setChoiceValues((arr) => arr.concat({ choiceId: choiceId, attributeId: attributeId, value: 50 }))
+        }
+    }
+
+
+    function createNewChoiceValuesAttribute(choiceId: string) {
+        const arrOfAttributeId = elements.filter(obj => obj.type === 'input').map(obj => obj.id)
+        for (let attributeId of arrOfAttributeId) {
             setChoiceValues((arr) => arr.concat({ choiceId: choiceId, attributeId: attributeId, value: 50 }))
         }
     }
@@ -150,7 +157,9 @@ function App() {
             position: startPos,
             style: genStyle
         }
+
         setElements((arr) => arr.concat(newChoice));
+        createNewChoiceValuesAttribute(newId)
         setChoiceInput("");
         // React context - create context, provide context and consume context in child - avoids having to use props (useContext hook)
     }
