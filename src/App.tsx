@@ -12,7 +12,7 @@ export interface IAttributeData {
     weighting: number
 }
 
-interface IValue {
+export interface IValue {
     choiceId: string,
     attributeId: string,
     value: number
@@ -28,7 +28,14 @@ interface IPath {
 export const ContextAttributeData = createContext<IAttributeData[]>([]);
 export const ContextChoiceValues = createContext<IValue[]>([])
 
-const initialChoiceValues = [{ choiceId: "2", attributeId: "1", value: 50 }]
+// const initialChoiceValues = [{ choiceId: "2", attributeId: "1", value: 50 }];
+// const initialAttributeData = [{ id: "1", attributeName: "Placeholder", weighting: 1 }];
+const outputNode = {
+    id: '3',
+    type: 'output', // output node
+    data: { label: 'Output Node' },
+    position: { x: 250, y: 250 },
+};
 
 
 function App() {
@@ -36,8 +43,8 @@ function App() {
     const [id, setId] = useState(4);
     const [attributeInput, setAttributeInput] = useState("");
     const [choiceInput, setChoiceInput] = useState("");
-    const [choiceValues, setChoiceValues] = useState(initialChoiceValues)
-    const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([{ id: "1", attributeName: "Placeholder", weighting: 1 }]);
+    const [choiceValues, setChoiceValues] = useState<IValue[]>([])
+    const [allAttributeData, setAllAttributeData] = useState<IAttributeData[]>([]);
 
 
     const attributeProps = {
@@ -49,7 +56,6 @@ function App() {
         setIsDraggable: setIsDraggable,
     }
 
-    console.log(choiceValues)
 
     function handleAttWeightingChange(id: string, newWeighting: number) {
         setAllAttributeData((arr) => {
@@ -65,49 +71,48 @@ function App() {
                     console.log("element updated:", el)
                 }
             }
-            console.log({ copyArr })
             return copyArr
         })
     }
 
+    // const initialElements = [
+    //     {
+    //         id: '1',
+    //         type: 'input', // input node
+    //         data: { label: <Attribute {...attributeProps} attributeTitle="Placeholder Title" id={"1"} /> },
+    //         position: { x: 250, y: 25 },
+    //         style: { "width": "200px" },
+    //     },
+    //     // default node
+    //     {
+    //         id: '2',
+    //         type: 'default',
+    //         // you can also pass a React component as a label
+    //         data: {
+    //             label:
+    //                 <Choice {...choiceProps} setChoiceValue={setChoiceValues} choiceTitle="Placeholder Title" choiceId={"2"} />
+    //         },
+    //         position: { x: 100, y: 125 },
+    //         style: { "width": "200px" },
+    //     },
+    //     {
+    //         id: '3',
+    //         type: 'output', // output node
+    //         data: { label: 'Output Node' },
+    //         position: { x: 250, y: 250 },
+    //     },
+    //     // animated edge
+    //     { id: 'e1-2', source: '1', target: '2', animated: true },
+    //     { id: 'e2-3', source: '2', target: '3' },
+    //     // create links based on type => loop through array to create links
+    // ]
 
     const getId = () => { setId((num) => num + 1); return id };
     const genStyle = { "width": "200px" };
     const startPos = { x: 250, y: 100 };
 
-    const initialElements = [
-        {
-            id: '1',
-            type: 'input', // input node
-            data: { label: <Attribute {...attributeProps} attributeTitle="Placeholder Title" id={"1"} /> },
-            position: { x: 250, y: 25 },
-            style: { "width": "200px" },
-        },
-        // default node
-        {
-            id: '2',
-            type: 'default',
-            // you can also pass a React component as a label
-            data: {
-                label:
-                    <Choice {...choiceProps} setChoiceValue={setChoiceValues} choiceTitle="Placeholder Title" choiceId={"2"} />
-            },
-            position: { x: 100, y: 125 },
-            style: { "width": "200px" },
-        },
-        {
-            id: '3',
-            type: 'output', // output node
-            data: { label: 'Output Node' },
-            position: { x: 250, y: 250 },
-        },
-        // animated edge
-        { id: 'e1-2', source: '1', target: '2', animated: true },
-        { id: 'e2-3', source: '2', target: '3' },
-        // create links based on type => loop through array to create links
-    ]
 
-    const [elements, setElements] = useState<any[]>(initialElements)
+    const [elements, setElements] = useState<any[]>([outputNode])
     // console.log(elements)
 
 
@@ -168,6 +173,21 @@ function App() {
     }
 
 
+    function createChoicePaths(currentId: string) {
+        let newAttributeChoicePaths: IPath[] = []
+        let newChoiceOutputPaths: IPath[] = []
+        for (let item of elements) {
+            if (item.type === 'input') {
+                newAttributeChoicePaths.push(createSinglePath(item.id, currentId, true))
+            }
+            if (item.type === 'output') {
+                newChoiceOutputPaths.push(createSinglePath(currentId, item.id, false))
+            }
+        }
+        setElements(arr => arr.concat(newAttributeChoicePaths.concat(newChoiceOutputPaths)))
+    }
+
+
     function handleAddChoice() {
         const newId = getId().toString()
         console.log(choiceInput);
@@ -185,8 +205,8 @@ function App() {
 
         setElements((arr) => arr.concat(newChoice));
         createNewChoiceValuesAttribute(newId)
+        createChoicePaths(newId)
         setChoiceInput("");
-        // React context - create context, provide context and consume context in child - avoids having to use props (useContext hook)
     }
 
 
