@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import { IAttributeData, ContextAttributeData, ContextChoiceValues } from "../App";
+import { IAttributeData, ContextAttributeData, ContextChoiceValues, IValue } from "../App";
 import "./components.css";
 
 interface IChoice {
     setIsDraggable: React.Dispatch<React.SetStateAction<boolean>>,
-    setChoiceValue: React.Dispatch<React.SetStateAction<{ choiceId: string; attributeId: string; value: number; }[]>>,
+    setChoiceValue: React.Dispatch<React.SetStateAction<IValue[]>>,
     choiceTitle: string,
     choiceId: string
 }
@@ -33,24 +33,25 @@ export default function Choice({ setIsDraggable, choiceTitle, setChoiceValue, ch
     }
 
 
-    function calculateWeightedScore(attributeId: string): number {
-        const value = choiceValues[choiceValues.findIndex(obj => obj.choiceId === choiceId && obj.attributeId === attributeId)].value
-        const weighting = allAttributeData[allAttributeData.findIndex(obj => obj.id === attributeId)].weighting
-        return value * weighting
-    }
 
-    function calculateTotalScore() {
-        let sum = 0;
-        for (let att of allAttributeData) {
-            sum += calculateWeightedScore(att.id)
-        }
-        return sum
-    }
 
 
     useEffect(() => {
+        function calculateWeightedScore(attributeId: string): number {
+            const value = choiceValues[choiceValues.findIndex(obj => obj.choiceId === choiceId && obj.attributeId === attributeId)].value
+            const weighting = allAttributeData[allAttributeData.findIndex(obj => obj.id === attributeId)].weighting
+            return value * weighting
+        }
+        function calculateTotalScore() {
+            let sum = 0;
+            for (let att of allAttributeData) {
+                sum += calculateWeightedScore(att.id)
+            }
+            return sum
+        }
+
         setTotalChoiceScore(calculateTotalScore())
-    }, [choiceValues, allAttributeData])
+    }, [choiceValues, allAttributeData, choiceId])
 
 
     function Slider(props: IAttributeData) {
